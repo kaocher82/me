@@ -42,6 +42,61 @@
             transform: translateY(0);
         }
     </style>
+
+        <title>Core Services - Optimized</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Define Inter font and custom accent color */
+        :root {
+            --accent-color: #3b82f6; /* Blue-500 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Custom dark blue background */
+        }
+        .accent-color {
+            color: var(--accent-color);
+        }
+        
+        /* Custom CSS for Glass Effect */
+        .glass-effect {
+            background-color: rgba(30, 41, 59, 0.5); /* Slate-800 with transparency */
+            border: 1px solid rgba(148, 163, 184, 0.2); /* Subtle light border */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3); /* Blue shadow on hover */
+        }
+
+        /* Custom CSS for Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        /* Stagger the animation */
+        .fade-in:nth-child(1) { animation-delay: 0s; }
+        .fade-in:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in:nth-child(4) { animation-delay: 0.3s; }
+        .fade-in:nth-child(5) { animation-delay: 0.4s; }
+        .fade-in:nth-child(6) { animation-delay: 0.5s; }
+    </style>
 </head>
 <body class="antialiased">
 
@@ -196,29 +251,67 @@
         </section>
         
         <!-- Services Section -->
-        <section id="services" class="py-20 bg-gray-900">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12 fade-in">
-                    <h2 class="text-3xl font-bold text-white">Core Services</h2>
-                    <p class="text-lg accent-color mt-2">How I Drive Growth</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="p-6 rounded-lg glass-effect fade-in">
-                        <h3 class="text-xl font-semibold text-white">শপিফাই এসইও বিশেষজ্ঞ</h3>
-                        <p class="mt-4 text-gray-300">তিনি শপিফাই স্টোরের জন্য ট্র্যাফিক বৃদ্ধি ও বিক্রি বাড়াতে কাজ করেন এবং গুগল সার্টিফাইড এসইও বিশেষজ্ঞ হিসেবে পরিচিত।</p>
-                    </div>
-                     <div class="p-6 rounded-lg glass-effect fade-in">
-                        <h3 class="text-xl font-semibold text-white">মোবাইল অ্যাপ ডেভেলপমেন্ট</h3>
-                        <p class="mt-4 text-gray-300">তিনি Aarry Limited-এর প্রতিষ্ঠাতা ও সিইও হিসেবে মোবাইল অ্যাপ ডেভেলপমেন্ট সেবা প্রদান করেন।</p>
-                    </div>
-                    <div class="p-6 rounded-lg glass-effect fade-in">
-                        <h3 class="text-xl font-semibold text-white">AI-Powered Strategy</h3>
-                        <p class="mt-4 text-gray-300">Leveraging advanced algorithms and AI tools to enhance SEO, create engaging content, and optimize user experience for superior performance.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
+<section id="services" class="py-20 bg-gray-900 min-h-screen flex items-center">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <!-- Section Header -->
+        <div class="text-center mb-16 fade-in">
+            <h2 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">Core Services</h2>
+            <p class="text-xl sm:text-2xl accent-color mt-3">How I Drive Growth for Your Business</p>
+            <p class="mt-4 text-gray-400 max-w-3xl mx-auto">My mission is to transform your digital presence into a powerful engine for sales and scalable business growth. I achieve this through a specialized, AI-powered approach across key digital channels.</p>
+        </div>
+
+        <!-- Services Grid (6 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Card 1: Shopify SEO Specialist -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">Shopify SEO Specialist</h3>
+                <p class="text-sm font-semibold text-white mb-4">E-commerce Revenue Driver</p>
+                <p class="mt-4 text-gray-300">As a **Google Certified SEO Expert**, I maximize your Shopify store's potential. My focus is on increasing **qualified organic traffic**, converting visitors into paying customers, and achieving a higher return on investment (ROI) from search engines.</p>
+            </div>
+
+            <!-- Card 2: AI SEO -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">AI SEO</h3>
+                <p class="text-sm font-semibold text-white mb-4">Artificial Intelligence Search Engine Optimization</p>
+                <p class="mt-4 text-gray-300">Gain a competitive edge with **predictive optimization**. I use cutting-edge AI tools for deep-dive keyword research, automated content strategy, and continuous SERP analysis, ensuring your store is always aligned with the highest-converting searches.</p>
+           <h3 class="text-2xl font-bold accent-color mb-3">My AI SEO Service</h3>
+            </div>
+            
+            <!-- Card 3: Mobile App Development With AI -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">Mobile App Development with AI </h3>
+                <p class="text-sm font-semibold text-white mb-4">High-Performance AI App Delivery</p>
+                <p class="mt-4 text-gray-300">I lead the development of robust, high-performance mobile applications tailored to your business needs, delivering seamless user experiences across all platforms as the Founder & CEO of **Aarry Limited**.</p>
+            </div>
+
+            <!-- Card 4: AI App Development -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">AI App Development</h3>
+                <p class="text-sm font-semibold text-white mb-4">Intelligent Mobile Functionality</p>
+                <p class="mt-4 text-gray-300">Elevate your app with **smart functionality**. I integrate powerful AI features—such as machine learning, NLP, and computer vision—to personalize the user journey and provide intelligent engagement that keeps users coming back.</p>
+            </div>
+
+            <!-- Card 5: AI-Powered Strategy -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">AI-Powered Strategy</h3>
+                <p class="text-sm font-semibold text-white mb-4">Operational Excellence & Optimization</p>
+                <p class="mt-4 text-gray-300">This is the foundation of my work. I leverage advanced algorithms and AI tools to create **superior performance** by enhancing SEO efforts, creating engaging and high-converting content, and continually optimizing the user experience.</p>
+            </div>
+
+            <!-- Card 6: AI Services for Business -->
+            <div class="p-8 rounded-xl glass-effect fade-in shadow-xl">
+                <h3 class="text-2xl font-bold accent-color mb-3">AI Services for Business</h3>
+                <p class="text-sm font-semibold text-white mb-4">Strategic Workflow Automation</p>
+                <p class="mt-4 text-gray-300">Streamline your workflow and **reduce operational costs**. I deliver custom AI solutions—including process automation, advanced data analytics, and bespoke machine learning models—to provide clear, actionable insights that drive strategic growth and efficiency.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+        
         <!-- Skills Section -->
         <section id="skills" class="py-20">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
