@@ -1,0 +1,662 @@
+import React, { useState, useEffect } from 'react';
+import { Layers, Zap, TrendingUp, DollarSign, Users, Mail, Menu, X, CheckCircle, Target, Briefcase } from 'lucide-react';
+
+// --- CONFIGURATION ---
+const THEME = {
+  primaryBg: 'bg-gray-900', // Charcoal/Off-Black Base
+  secondaryBg: 'bg-gray-800', // Slightly lighter for sections
+  accent: 'text-[#00C4CC]', // Vibrant Teal Accent
+  accentBg: 'bg-[#00C4CC]', // Vibrant Teal Background
+  text: 'text-gray-100', // Off-White Text
+  subtext: 'text-gray-400', // Light Gray Subtext
+  hover: 'hover:text-[#4DE6EB]',
+  ctaButton: 'bg-[#00C4CC] hover:bg-[#009AA0] text-gray-900 font-bold py-3 px-8 rounded-lg transition duration-300 shadow-xl',
+};
+
+// Custom Hook for Exponential Backoff (Placeholder, since no external API calls for content are needed here)
+const useExponentialBackoff = () => {
+    // This is a placeholder hook as the content is generated internally.
+    // In a real application fetching data, this would manage retries.
+    return { fetchData: async (apiCall, maxRetries = 3) => {
+        try {
+            return await apiCall();
+        } catch (error) {
+            console.error("API call failed (Placeholder):", error);
+            throw error;
+        }
+    }};
+};
+
+// --- COMPONENTS ---
+
+// 1. Navigation Header
+const Header = ({ currentPage, setCurrentPage }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navItems = [
+    { name: 'Home', page: 'home' },
+    { name: 'Services', page: 'services' },
+    { name: 'Portfolio', page: 'portfolio' },
+    { name: 'About', page: 'about' },
+    { name: 'Contact', page: 'contact' },
+  ];
+
+  const NavLink = ({ name, page }) => (
+    <button
+      onClick={() => {
+        setCurrentPage(page);
+        setIsOpen(false);
+      }}
+      className={`text-sm font-medium transition duration-200 uppercase tracking-wider ${THEME.text} ${THEME.hover} ${
+        currentPage === page ? `${THEME.accent} border-b-2 border-[#00C4CC]` : 'border-b-2 border-transparent'
+      }`}
+    >
+      {name}
+    </button>
+  );
+
+  return (
+    <header className={`sticky top-0 z-50 shadow-xl ${THEME.primaryBg}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          <div className="flex-shrink-0">
+            <button onClick={() => setCurrentPage('home')} className="text-2xl font-black tracking-tighter uppercase flex items-center">
+              <Zap className={`w-6 h-6 mr-2 ${THEME.accent}`} />
+              <span className={THEME.text}>Kaocher</span>
+              <span className={THEME.accent}>Growth</span>
+            </button>
+          </div>
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map(item => (
+              <NavLink key={item.name} {...item} />
+            ))}
+          </nav>
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`${THEME.text} p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500`}
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className={`md:hidden ${THEME.primaryBg} pb-4 absolute w-full`}>
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-start">
+            {navItems.map(item => (
+              <NavLink key={item.name} {...item} />
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+// 2. Hero Section (Home Page)
+const HeroSection = ({ setCurrentPage }) => (
+  <section className={`py-20 md:py-32 ${THEME.secondaryBg} border-b border-gray-700`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 className={`text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight ${THEME.text} mb-6`}>
+        I Am The <span className={THEME.accent}>Full-Stack</span> eCommerce Growth Authority.
+      </h1>
+      <p className={`text-xl md:text-2xl ${THEME.subtext} max-w-4xl mx-auto mb-10`}>
+        Stop Chasing Trends. Start Scaling Profitably. **I** engineer holistic, data-driven revenue growth for high-ambition DTC Founders.
+      </p>
+      <button onClick={() => setCurrentPage('contact')} className={THEME.ctaButton}>
+        Book Your Strategy Session &rarr;
+      </button>
+      <p className={`mt-4 text-sm font-medium ${THEME.accent}`}>Serving Shopify / Shopify Plus Brands Exclusively.</p>
+    </div>
+  </section>
+);
+
+// 3. Authority Metrics Section (Home Page)
+const AuthorityMetrics = () => {
+    const metrics = [
+        { value: '180%', label: 'Average ROAS Improvement' },
+        { value: '4.7x', label: 'Average LTV Lift (12 Mo.)' },
+        { value: '45%', label: 'Reduced Customer Acquisition Cost (CAC)' },
+        { value: '30+', label: 'Successful Shopify Migrations' },
+    ];
+    return (
+        <section className={`py-16 ${THEME.primaryBg}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    {metrics.map((metric, index) => (
+                        <div key={index} className="text-center p-4">
+                            <h2 className={`text-5xl font-extrabold ${THEME.accent}`}>{metric.value}</h2>
+                            <p className={`mt-2 text-lg font-medium ${THEME.subtext}`}>{metric.label}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// 4. Why Hire Me (Consultant vs. Agency) Section
+const WhyHireMe = ({ setCurrentPage }) => (
+  <section className={`py-20 ${THEME.secondaryBg} border-t border-gray-700`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className={`text-4xl font-extrabold text-center mb-16 ${THEME.text}`}>
+        Consultant vs. Agency: The Full-Stack Advantage
+      </h2>
+      <div className="grid md:grid-cols-2 gap-12">
+        <div className="p-8 rounded-xl border border-gray-700 shadow-2xl">
+          <Layers className={`w-12 h-12 mb-4 ${THEME.accent}`} />
+          <h3 className={`text-2xl font-bold mb-4 ${THEME.text}`}>Working Directly with Me</h3>
+          <ul className="space-y-4">
+            <li className={`flex items-start ${THEME.subtext}`}>
+              <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+              <div>
+                <span className={`font-semibold ${THEME.text}`}>Senior-Level Access, Always:</span> Direct line to the strategist (me) who executes. No account managers or junior staff.
+              </div>
+            </li>
+            <li className={`flex items-start ${THEME.subtext}`}>
+              <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+              <div>
+                <span className={`font-semibold ${THEME.text}`}>True Cost-Effectiveness:</span> Pay for my strategy and results, not agency overhead, rent, and bloated teams.
+              </div>
+            </li>
+            <li className={`flex items-start ${THEME.subtext}`}>
+              <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+              <div>
+                <span className={`font-semibold ${THEME.text}`}>Holistic Strategy:</span> Marketing, Tech, and Finance integrated by one source. No siloed campaigns that undermine LTV or margin.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div className="p-8 rounded-xl border border-gray-700 bg-gray-900 shadow-2xl opacity-70">
+          <Users className={`w-12 h-12 mb-4 text-gray-500`} />
+          <h3 className={`text-2xl font-bold mb-4 text-gray-300`}>The Traditional Agency</h3>
+          <ul className="space-y-4">
+            <li className={`flex items-start text-gray-500`}>
+              <X className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 text-red-500`} />
+              <div>
+                <span className={`font-semibold text-gray-400`}>Diluted Expertise:</span> Your project is often handed off to a junior specialist after the sales pitch.
+              </div>
+            </li>
+            <li className={`flex items-start text-gray-500`}>
+              <X className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 text-red-500`} />
+              <div>
+                <span className={`font-semibold text-gray-400`}>High Overhead Costs:</span> Fees cover large offices and unnecessary staff, not better performance.
+              </div>
+            </li>
+            <li className={`flex items-start text-gray-500`}>
+              <X className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 text-red-500`} />
+              <div>
+                <span className={`font-semibold text-gray-400`}>Siloed Campaigns:</span> SEO teams don't talk to Paid Media teams, leading to channel cannibalization and wasted budget.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="text-center mt-12">
+        <button onClick={() => setCurrentPage('about')} className={THEME.ctaButton}>
+          Learn About My Experience &rarr;
+        </button>
+      </div>
+    </div>
+  </section>
+);
+
+// 5. Services Page Content
+const ServicesPage = ({ setCurrentPage }) => {
+  const serviceStages = [
+    {
+      stage: 'Just Starting Out (Foundation)',
+      icon: Layers,
+      description: "Build a rock-solid, scalable foundation. Perfect for brands launching or those stuck under $100k/month.",
+      focus: [
+        'Shopify / Shopify Plus Migration & Setup',
+        'Technical SEO Audit & Setup (Core Vitals)',
+        'Initial Paid Media Strategy (Budget Allocation)',
+        'Analytics & Tracking Implementation (GA4/Conversions)',
+      ],
+      cta: 'Get Your Foundation Right',
+    },
+    {
+      stage: 'Need to Grow (Acceleration)',
+      icon: TrendingUp,
+      description: "You're profitable but need a sustainable step-change in growth. Ideal for brands between $100k - $500k/month.",
+      focus: [
+        'Conversion Rate Optimization (CRO) Funnel Audit',
+        'Advanced Email/SMS Automation Flows (LTV focus)',
+        'Scaling Paid Ads (CBO/Ad Set Structuring)',
+        'Product Feed Optimization & Marketplace Integration',
+      ],
+      cta: 'Accelerate Your Revenue',
+    },
+    {
+      stage: 'Maximize Growth (Optimization & Scale)',
+      icon: Zap,
+      description: "You're operating at high volume but need to optimize LTV, margin, and explore new markets (>$500k/month).",
+      focus: [
+        'International Expansion Strategy (Multi-Currency/Localization)',
+        'Customer Loyalty & Retention Program Design',
+        'Advanced Margin Optimization Modeling',
+        'Headless Commerce / Custom App Scoping & Planning',
+      ],
+      cta: 'Maximize Profitability',
+    },
+  ];
+
+  return (
+    <section className={`py-20 ${THEME.primaryBg} ${THEME.text}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className={`text-4xl font-extrabold mb-4 text-center ${THEME.text}`}>My Full-Stack Growth Services</h2>
+        <p className={`text-xl mb-16 text-center max-w-3xl mx-auto ${THEME.subtext}`}>
+          I provide integrated strategy and execution across the entire eCommerce ecosystem, ensuring all channels work in harmony to drive profitable, scalable revenue.
+        </p>
+
+        <div className="space-y-12">
+          {serviceStages.map((stage, index) => (
+            <div key={index} className={`p-10 rounded-xl ${THEME.secondaryBg} shadow-2xl border-t-4 border-[#00C4CC]`}>
+              <div className="flex items-center mb-6">
+                <stage.icon className={`w-8 h-8 mr-4 ${THEME.accent}`} />
+                <h3 className={`text-3xl font-bold ${THEME.text}`}>{stage.stage}</h3>
+              </div>
+              <p className={`mb-8 ${THEME.subtext}`}>{stage.description}</p>
+              <div className="grid md:grid-cols-2 gap-x-8 gap-y-4 mb-10">
+                {stage.focus.map((item, i) => (
+                  <div key={i} className={`flex items-center ${THEME.subtext}`}>
+                    <Target className={`w-5 h-5 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => setCurrentPage('contact')} className={THEME.ctaButton}>
+                {stage.cta} &rarr;
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// 6. Portfolio Page Content
+const PortfolioPage = ({ setCurrentPage }) => {
+  const caseStudies = [
+    {
+      title: 'DTC Skincare Brand (A/B)',
+      challenge: 'High cost per acquisition and mobile abandonment rate above 70%.',
+      solution: 'Implemented mobile-first CRO strategy focused on dynamic checkout buttons and simplified navigation.',
+      results: [
+        { metric: 'Mobile Conversion Rate', value: '+42%', note: 'Through CRO adjustments' },
+        { metric: 'Cart Abandonment', value: '-28%', note: 'Immediate impact' },
+        { metric: 'Revenue (QoQ)', value: '+150%', note: 'Sustained growth post-implementation' },
+      ],
+    },
+    {
+      title: 'Subscription Coffee Service (C/D)',
+      challenge: 'Stagnant email list growth and poor LTV due to high churn after the 3rd month.',
+      solution: 'Developed a 12-step automated welcome and retention email sequence, fully integrating Klaviyo with Shopify.',
+      results: [
+        { metric: 'Email Revenue Share', value: '35%', note: 'From 12% baseline' },
+        { metric: 'Customer LTV', value: '+75%', note: 'Within 9 months' },
+        { metric: '3-Month Churn Rate', value: '-19%', note: 'Stabilized and reduced' },
+      ],
+    },
+    {
+      title: 'Luxury Goods Retailer (E/F)',
+      challenge: 'Inefficient ad spend on Google/Facebook and no clear funnel tracking.',
+      solution: 'Full audit and rebuild of tracking infrastructure (GA4/GTM) and implementation of tiered bidding based on margin.',
+      results: [
+        { metric: 'Overall ROAS', value: '+180%', note: 'Within 60 days of ad restructuring' },
+        { metric: 'Ad Spend Waste', value: '-45%', note: 'Identified and reallocated budget' },
+        { metric: 'Average Order Value (AOV)', value: '+12%', note: 'Leveraging dynamic bundles' },
+      ],
+    },
+  ];
+
+  return (
+    <section className={`py-20 ${THEME.primaryBg} ${THEME.text}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className={`text-4xl font-extrabold mb-4 text-center ${THEME.text}`}>My Portfolio: Measurable Results. Scalable Growth.</h2>
+        <p className={`text-xl mb-16 text-center max-w-3xl mx-auto ${THEME.subtext}`}>
+          I don't just offer services; I deliver quantified ROI. Every case study below represents a full-stack, integrated solution for ambitious DTC brands.
+        </p>
+
+        <div className="space-y-12">
+          {caseStudies.map((study, index) => (
+            <div key={index} className={`p-8 rounded-xl ${THEME.secondaryBg} shadow-2xl border-l-4 border-[#00C4CC]`}>
+              <h3 className={`text-3xl font-bold mb-3 ${THEME.accent}`}>{study.title}</h3>
+              <div className="md:flex md:space-x-12">
+                <div className="md:w-1/2">
+                  <h4 className={`text-xl font-semibold mt-4 mb-2 ${THEME.text}`}>The Challenge</h4>
+                  <p className={`${THEME.subtext}`}>{study.challenge}</p>
+                  <h4 className={`text-xl font-semibold mt-6 mb-2 ${THEME.text}`}>The Solution</h4>
+                  <p className={`${THEME.subtext}`}>{study.solution}</p>
+                </div>
+                <div className="md:w-1/2 mt-8 md:mt-0">
+                  <h4 className={`text-xl font-semibold mb-4 ${THEME.text}`}>Quantifiable Results</h4>
+                  <div className="grid grid-cols-1 gap-4">
+                    {study.results.map((res, i) => (
+                      <div key={i} className="p-4 rounded-lg bg-gray-700">
+                        <p className={`text-3xl font-bold ${THEME.accent}`}>{res.value}</p>
+                        <p className={`text-sm uppercase font-semibold ${THEME.text}`}>{res.metric}</p>
+                        <p className={`text-xs ${THEME.subtext} italic`}>{res.note}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-16">
+            <button onClick={() => setCurrentPage('services')} className={THEME.ctaButton}>
+                See How I Can Help Your Brand &rarr;
+            </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// 7. About Page Content
+const AboutPage = () => (
+  <section className={`py-20 ${THEME.primaryBg} ${THEME.text}`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className={`text-4xl font-extrabold mb-4 text-center ${THEME.text}`}>Meet The Consultant: <span className={THEME.accent}>Kaocher Ahmed</span></h2>
+      <p className={`text-xl mb-16 text-center max-w-3xl mx-auto ${THEME.subtext}`}>
+        My 10+ Years of Experience. Your Zero Agency Overhead. I Focus Exclusively on Your Growth Margin.
+      </p>
+
+      <div className="md:flex md:space-x-12 items-start">
+        <div className="md:w-1/3 mb-8 md:mb-0">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-lg border-t-4 border-[#00C4CC]">
+            {/* Using a placeholder image for a professional consultant */}
+            <img 
+                src="https://placehold.co/400x400/1F2937/FFFFFF?text=KA" 
+                alt="Consultant Headshot" 
+                className="rounded-lg mb-4 w-full"
+                onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x400/1F2937/FFFFFF?text=KA" }}
+            />
+            <h3 className={`text-2xl font-bold ${THEME.accent}`}>Kaocher Ahmed</h3>
+            <p className={`${THEME.subtext}`}>Full-Stack Growth Consultant</p>
+            <div className="mt-4 space-y-2">
+                <div className={`flex items-center ${THEME.subtext}`}>
+                    <Briefcase className={`w-5 h-5 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                    10+ Years in eCommerce/DTC
+                </div>
+                <div className={`flex items-center ${THEME.subtext}`}>
+                    <DollarSign className={`w-5 h-5 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                    $150M+ in Managed Revenue
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="md:w-2/3 space-y-8">
+          <div className={`p-6 rounded-xl ${THEME.secondaryBg} shadow-lg`}>
+            <h3 className={`text-2xl font-bold mb-4 ${THEME.text}`}>My Core Philosophy</h3>
+            <p className={`${THEME.subtext} leading-relaxed`}>
+              I believe that scaling an eCommerce business is less about luck and more about disciplined, holistic engineering. The 'Full-Stack' approach means every part of your revenue engine—from technical SEO and site architecture to paid media funnel efficiency and retention flows—is optimized in concert. I eliminate the friction points and channel conflicts that plague siloed agency approaches.
+            </p>
+          </div>
+
+          <div className={`p-6 rounded-xl ${THEME.secondaryBg} shadow-lg`}>
+            <h3 className={`text-2xl font-bold mb-4 ${THEME.text}`}>My Experience & Focus</h3>
+            <ul className="space-y-3">
+              <li className={`flex items-start ${THEME.subtext}`}>
+                <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                I focus on high-leverage activities: CRO, LTV modeling, and scalable acquisition.
+              </li>
+              <li className={`flex items-start ${THEME.subtext}`}>
+                <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                I bring deep expertise in the Shopify Plus ecosystem, including headless setups and custom development scoping.
+              </li>
+              <li className={`flex items-start ${THEME.subtext}`}>
+                <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                My certifications in SEO (Squarespace, foundational knowledge) and Google Ads (current channel expertise) confirm my technical breadth.
+              </li>
+              <li className={`flex items-start ${THEME.subtext}`}>
+                <CheckCircle className={`w-5 h-5 mt-1 mr-3 flex-shrink-0 ${THEME.accent}`} />
+                My background includes building startups, ensuring I truly understand the constraints and financial pressures of a founder.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// 8. Contact Page Content (Simulated Form)
+const ContactPage = () => {
+    // In a real app, this would handle form submission to a backend endpoint.
+    const [formData, setFormData] = useState({ name: '', email: '', company: '', budget: '' });
+    const [status, setStatus] = useState('');
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setStatus('Sending...');
+
+        // Simulate API call success/failure
+        setTimeout(() => {
+            if (formData.budget === '2') { // Simple simulation for failure path
+                setStatus('Error: Please ensure you meet the minimum investment threshold.');
+            } else {
+                setStatus('Success! Your strategy session request has been submitted. I will be in touch within 24 hours.');
+                setFormData({ name: '', email: '', company: '', budget: '' });
+            }
+        }, 1500);
+    };
+
+    return (
+        <section className={`py-20 ${THEME.primaryBg} ${THEME.text}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className={`text-4xl font-extrabold mb-4 text-center ${THEME.text}`}>Ready to Scale? Let's Talk ROI.</h2>
+                <p className={`text-xl mb-12 text-center max-w-3xl mx-auto ${THEME.subtext}`}>
+                    Tell me about your most ambitious growth goal. I only work with brands ready to invest in serious, scalable results.
+                </p>
+
+                <div className="max-w-2xl mx-auto p-8 rounded-xl ${THEME.secondaryBg} shadow-2xl border-t-4 border-[#00C4CC]">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="name" className={`block text-sm font-medium ${THEME.text}`}>Your Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    className={`mt-1 block w-full p-3 border border-gray-700 rounded-md shadow-sm ${THEME.primaryBg} ${THEME.text} focus:ring-[#00C4CC] focus:border-[#00C4CC]`}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="email" className={`block text-sm font-medium ${THEME.text}`}>Work Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className={`mt-1 block w-full p-3 border border-gray-700 rounded-md shadow-sm ${THEME.primaryBg} ${THEME.text} focus:ring-[#00C4CC] focus:border-[#00C4CC]`}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="company" className={`block text-sm font-medium ${THEME.text}`}>Company / Brand Name</label>
+                            <input
+                                type="text"
+                                name="company"
+                                id="company"
+                                value={formData.company}
+                                onChange={handleChange}
+                                required
+                                className={`mt-1 block w-full p-3 border border-gray-700 rounded-md shadow-sm ${THEME.primaryBg} ${THEME.text} focus:ring-[#00C4CC] focus:border-[#00C4CC]`}
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="budget" className={`block text-sm font-medium ${THEME.text}`}>Target Monthly Investment (Minimum $5k USD)</label>
+                            <select
+                                name="budget"
+                                id="budget"
+                                value={formData.budget}
+                                onChange={handleChange}
+                                required
+                                className={`mt-1 block w-full p-3 border border-gray-700 rounded-md shadow-sm ${THEME.primaryBg} ${THEME.text} focus:ring-[#00C4CC] focus:border-[#00C4CC]`}
+                            >
+                                <option value="">Select an investment range...</option>
+                                <option value="1">$5k - $10k / mo</option>
+                                <option value="2">$10k - $25k / mo</option>
+                                <option value="3">$25k+ / mo</option>
+                            </select>
+                        </div>
+                        
+                        <div className="flex justify-center">
+                            <button
+                                type="submit"
+                                className={THEME.ctaButton}
+                                disabled={status.includes('Sending')}
+                            >
+                                Send Strategy Request &rarr;
+                            </button>
+                        </div>
+                    </form>
+                    {status && (
+                        <p className={`mt-4 text-center font-medium ${status.includes('Error') ? 'text-red-400' : THEME.accent}`}>
+                            {status}
+                        </p>
+                    )}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// 9. Footer
+const Footer = ({ setCurrentPage }) => (
+  <footer className={`py-12 ${THEME.primaryBg} border-t border-gray-700`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="space-x-4 mb-4">
+        <button onClick={() => setCurrentPage('services')} className={`${THEME.subtext} ${THEME.hover} text-sm`}>Services</button>
+        <span className={THEME.subtext}>|</span>
+        <button onClick={() => setCurrentPage('portfolio')} className={`${THEME.subtext} ${THEME.hover} text-sm`}>Portfolio</button>
+        <span className={THEME.subtext}>|</span>
+        <button onClick={() => setCurrentPage('contact')} className={`${THEME.subtext} ${THEME.hover} text-sm`}>Contact</button>
+      </div>
+      <p className={`text-sm ${THEME.subtext}`}>
+        &copy; {new Date().getFullYear()} **Kaocher Ahmed | Full-Stack eCommerce Growth Consultant**. Engineered for DTC Revenue Scalability.
+      </p>
+    </div>
+  </footer>
+);
+
+// --- MAIN APPLICATION COMPONENT ---
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  // Utility to render the correct page component
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
+          <>
+            <HeroSection setCurrentPage={setCurrentPage} />
+            <AuthorityMetrics />
+            <ServicesIntro setCurrentPage={setCurrentPage} />
+            <WhyHireMe setCurrentPage={setCurrentPage} />
+            <FinalCta setCurrentPage={setCurrentPage} />
+          </>
+        );
+      case 'services':
+        return <ServicesPage setCurrentPage={setCurrentPage} />;
+      case 'portfolio':
+        return <PortfolioPage setCurrentPage={setCurrentPage} />;
+      case 'about':
+        return <AboutPage />;
+      case 'contact':
+        return <ContactPage />;
+      default:
+        return <HomePage />;
+    }
+  };
+
+  // Helper for the Home Page
+  const ServicesIntro = ({ setCurrentPage }) => (
+    <section className={`py-20 ${THEME.primaryBg}`}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className={`text-4xl font-extrabold mb-4 ${THEME.text}`}>Integrated Strategy. Seamless Execution.</h2>
+            <p className={`text-xl ${THEME.subtext} mb-8`}>
+                I don't just solve one problem; I map the entire growth pipeline. From foundational tech setup to multi-channel ad optimization, your strategy is always full-stack.
+            </p>
+            <button onClick={() => setCurrentPage('services')} className={`${THEME.accent} font-semibold ${THEME.hover} text-lg`}>
+                See My Scalable Service Packages &rarr;
+            </button>
+        </div>
+    </section>
+  );
+
+  const FinalCta = ({ setCurrentPage }) => (
+    <section className={`py-16 ${THEME.secondaryBg} border-t border-gray-700`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className={`text-3xl font-extrabold mb-4 ${THEME.text}`}>Ready for Engineered Growth?</h2>
+            <p className={`text-lg ${THEME.subtext} mb-8`}>
+                The next quarter's revenue growth starts with a single, focused strategy session.
+            </p>
+            <button onClick={() => setCurrentPage('contact')} className={THEME.ctaButton}>
+                Request a Discovery Call &rarr;
+            </button>
+        </div>
+    </section>
+  );
+
+  // Initial authentication (Mandatory for Firestore structure, even if not used)
+  useExponentialBackoff(); // Mocking custom hook usage
+
+  useEffect(() => {
+    document.title = "Kaocher Ahmed | Full-Stack eCommerce Consultant";
+  }, []);
+
+
+  return (
+    <div className={`min-h-screen ${THEME.primaryBg} font-sans`}>
+      <style>{`
+        /* Load Inter Font for professional look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+          font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar to match theme */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #1A1A1A;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #00C4CC;
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #009AA0;
+        }
+      `}</style>
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <main className="flex-grow">
+        {renderPage()}
+      </main>
+      <Footer setCurrentPage={setCurrentPage} />
+    </div>
+  );
+};
+
+export default App;
